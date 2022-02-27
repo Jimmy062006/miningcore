@@ -26,9 +26,9 @@ public class StatsRepository : IStatsRepository
         var mapped = mapper.Map<Entities.PoolStats>(stats);
 
         const string query = @"INSERT INTO poolstats(poolid, connectedminers, poolhashrate, networkhashrate,
-            networkdifficulty, lastnetworkblocktime, blockheight, connectedpeers, sharespersecond, created)
+            networkdifficulty, lastnetworkblocktime, blockheight, connectedpeers, sharespersecond, created, connectedworkers)
             VALUES(@poolid, @connectedminers, @poolhashrate, @networkhashrate, @networkdifficulty,
-            @lastnetworkblocktime, @blockheight, @connectedpeers, @sharespersecond, @created)";
+            @lastnetworkblocktime, @blockheight, @connectedpeers, @sharespersecond, @created, @connectedworkers)";
 
         await con.ExecuteAsync(new CommandDefinition(query, mapped, tx, cancellationToken: ct));
     }
