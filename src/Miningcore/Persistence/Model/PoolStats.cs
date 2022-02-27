@@ -6,6 +6,8 @@ public record PoolStats
     public string PoolId { get; init; }
 
     public int ConnectedMiners { get; init; }
+    public int ConnectedWorkers { get; set; }
+
     public float PoolHashrate { get; init; }
     public double NetworkHashrate { get; init; }
     public double NetworkDifficulty { get; init; }
