@@ -17,6 +17,8 @@ public class BlockFoundNotification : BlockNotification
     public string Miner { get; set; }
     public string MinerExplorerLink { get; set; }
     public string Source { get; set; }
+    public double Diff { get; set; }
+    public double? Effort { get; set; }
 }
 
 public class NewChainHeightNotification : BlockNotification
