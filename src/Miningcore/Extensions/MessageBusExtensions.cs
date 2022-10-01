@@ -28,7 +28,6 @@ public static class MessageBusExtensions
             MinerExplorerLink = minerExplorerLink,
             Source = block.Source,
             Diff = block.NetworkDifficulty,
-            Effort = block.Effort
         });
     }
 
