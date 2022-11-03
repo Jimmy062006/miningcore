@@ -40,8 +40,8 @@ public class StatsRepository : IStatsRepository
         if(string.IsNullOrEmpty(mapped.Worker))
             mapped.Worker = string.Empty;
 
-        const string query = @"INSERT INTO minerstats(poolid, miner, worker, hashrate, sharespersecond, created)
-            VALUES(@poolid, @miner, @worker, @hashrate, @sharespersecond, @created)";
+        const string query = @"INSERT INTO minerstats(poolid, miner, worker, hashrate, sharespersecond, created, effort)
+            VALUES(@poolid, @miner, @worker, @hashrate, @sharespersecond, @created, @effort)";
 
         await con.ExecuteAsync(new CommandDefinition(query, mapped, tx, cancellationToken: ct));
     }
@@ -139,6 +139,7 @@ public class StatsRepository : IStatsRepository
                         Workers = stats.ToDictionary(x => x.Worker ?? string.Empty, x => new WorkerPerformanceStats
                         {
                             Hashrate = x.Hashrate,
+                            CurrentEffort = x.Effort,
                             SharesPerSecond = x.SharesPerSecond
                         }),
 

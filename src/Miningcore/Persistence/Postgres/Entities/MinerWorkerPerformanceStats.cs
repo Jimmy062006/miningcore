@@ -8,6 +8,7 @@ public class MinerWorkerPerformanceStats
     public string Worker { get; set; }
     public double Hashrate { get; set; }
     public double SharesPerSecond { get; set; }
+    public double Effort { get; set; }
     public DateTime Created { get; set; }
 
     public int Partition { get; set; }

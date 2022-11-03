@@ -230,11 +230,17 @@ public class StatsRecorder : BackgroundService
                             minerHashTimeFrame = 1;
 
                         // calculate miner/worker stats
+                        var from = DateTime.MinValue;
+                        var to = DateTime.Now;
+
                         var minerHashrate = pool.HashrateFromShares(item.Sum, minerHashTimeFrame);
                         minerHashrate = Math.Floor(minerHashrate);
                         minerTotalHashrate += minerHashrate;
                         stats.Hashrate = minerHashrate;
                         stats.Worker = item.Worker;
+                        stats.Effort = await cf.Run(con =>
+                        shareRepo.GetWorkerEffectiveAccumulatedShareDifficultyBetweenAsync(
+                            con, pool.Config.Id, from, to, item.Miner, item.Worker, ct)); ;
 
                         stats.SharesPerSecond = Math.Round(item.Count / minerHashTimeFrame, 3);
 

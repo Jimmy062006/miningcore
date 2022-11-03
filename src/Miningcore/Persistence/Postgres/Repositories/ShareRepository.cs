@@ -103,6 +103,13 @@ public class ShareRepository : IShareRepository
         return con.QuerySingleAsync<double?>(new CommandDefinition(query, new { poolId, start, end }, cancellationToken: ct));
     }
 
+    public Task<double> GetWorkerEffectiveAccumulatedShareDifficultyBetweenAsync(IDbConnection con, string poolId, DateTime start, DateTime end, string miner, string worker, CancellationToken ct)
+    {
+        const string query = "SELECT SUM(difficulty / networkdifficulty) FROM shares WHERE poolid = @poolId AND miner = @miner AND worker = @worker AND created > @start AND created < @end";
+
+        return con.QuerySingleAsync<double>(new CommandDefinition(query, new { poolId, start, end, miner, worker }, cancellationToken: ct));
+    }
+
     public async Task<MinerWorkerHashes[]> GetHashAccumulationBetweenAsync(IDbConnection con, string poolId, DateTime start, DateTime end, CancellationToken ct)
     {
         const string query = @"SELECT SUM(difficulty), COUNT(difficulty), MIN(created) AS firstshare, MAX(created) AS lastshare, miner, worker FROM shares
