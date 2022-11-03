@@ -31,6 +31,7 @@ public class StatsRecorder : BackgroundService
         IMessageBus messageBus,
         IMapper mapper,
         ClusterConfig clusterConfig,
+        IBlockRepository blockRepo,
         IShareRepository shareRepo,
         IStatsRepository statsRepo)
     {
@@ -41,6 +42,7 @@ public class StatsRecorder : BackgroundService
         Contract.RequiresNonNull(mapper);
         Contract.RequiresNonNull(shareRepo);
         Contract.RequiresNonNull(statsRepo);
+        Contract.RequiresNonNull(blockRepo);
 
         this.clock = clock;
         this.cf = cf;
@@ -49,6 +51,7 @@ public class StatsRecorder : BackgroundService
         this.shareRepo = shareRepo;
         this.statsRepo = statsRepo;
         this.clusterConfig = clusterConfig;
+        this.blockRepo = blockRepo;
 
         updateInterval = TimeSpan.FromSeconds(clusterConfig.Statistics?.UpdateInterval ?? 120);
         gcInterval = TimeSpan.FromHours(clusterConfig.Statistics?.GcInterval ?? 4);
@@ -58,6 +61,7 @@ public class StatsRecorder : BackgroundService
         BuildFaultHandlingPolicy();
     }
 
+    private readonly IBlockRepository blockRepo;
     private readonly IMasterClock clock;
     private readonly IStatsRepository statsRepo;
     private readonly IConnectionFactory cf;
@@ -232,6 +236,17 @@ public class StatsRecorder : BackgroundService
                         // calculate miner/worker stats
                         var from = DateTime.MinValue;
                         var to = DateTime.Now;
+
+                        // get last block for pool
+                        var lastBlock = await cf.Run(con => blockRepo.GetBlockBeforeAsync(con, poolId, new[]
+                        {
+                            BlockStatus.Confirmed,
+                            BlockStatus.Orphaned,
+                            BlockStatus.Pending,
+                        }, DateTime.Now));
+
+                        if(lastBlock != null)
+                            from = lastBlock.Created;
 
                         var minerHashrate = pool.HashrateFromShares(item.Sum, minerHashTimeFrame);
                         minerHashrate = Math.Floor(minerHashrate);
