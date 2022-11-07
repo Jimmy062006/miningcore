@@ -78,6 +78,7 @@ public class RpcClient
         }
 
         catch(Exception ex)
+
         {
             if(throwOnError)
                 throw;

@@ -191,7 +191,7 @@ public class BitcoinPayoutHandler : PayoutHandlerBase,
         // build args
         var amounts = balances
             .Where(x => x.Amount > 0)
-            .ToDictionary(x => x.Address, x => Math.Round(x.Amount, 4));
+            .ToDictionary(x => x.Address, x => Math.Round(x.Amount, 4, MidpointRounding.ToZero));
 
         if(amounts.Count == 0)
             return;
