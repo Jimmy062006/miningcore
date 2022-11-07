@@ -25,6 +25,10 @@ Commercial support directly by the maintainer is available through [miningcore.p
 
 For general questions visit the [Discussions Area](https://github.com/oliverw/miningcore/discussions).
 
+## Contributions
+
+Code contributions are very welcome and should be submitted as standard [pull requests](https://docs.github.com/en/pull-requests) (PR) based on the [`dev` branch](https://github.com/oliverw/miningcore/tree/dev).
+
 ## Building on Debian/Ubuntu
 
 ```console
@@ -81,6 +85,31 @@ For macOS:
 docker run --rm -v $(pwd):/app -w /app mcr.microsoft.com/dotnet/sdk:6.0 /bin/bash -c 'apt update && apt install libssl-dev pkg-config libboost-all-dev libsodium-dev build-essential cmake -y --no-install-recommends && cd src/Miningcore && dotnet publish -c Release --framework net6.0 -o /app/build/ -r osx-x64 --self-contained false'
 ```
 
+### Building and Running Miningcore from a container
+
+**note** - The build scripts optimize  the build for the hardware platform the container is built on ( does it have avx for example).  If you run this container on a platform that does NOT have the same architecture you could have unexplained crashes.  YOU SHOULD BUILD THIS CONTAINER ON THE HOST YOU ARE GOING TO RUN THIS CONTAINER ON.
+
+Commands to build container: `docker build -t <your_dockerhubid>/miningcore:v73-foo .`
+
+The docker build assumes you are going to mount your  config file  in a volume mount.  for example:
+
+```sh
+
+docker run -d \
+    -p 4000:4000 \
+    -p 4066:4066 \
+    -p 4067:4067 \
+    --name mc    \
+    -v `pwd`/config_prod.json:/app/config.json \
+    --restart=unless-stopped \
+    <your_dockerhubid>/miningcore:v73-foo
+
+```
+
+
+
+
+
 For Windows using Linux container:
 
 ```console
@@ -93,6 +122,12 @@ docker system prune -af
 ```
 
 ## Running Miningcore
+
+### Production OS
+
+Windows is **not** a supported production environment. Only Linux is. Please do not file issues related to running a pool on Windows. Windows topics should be posted under [discussions](https://github.com/oliverw/miningcore/discussions).
+
+Running and developing Miningcore on Windows is of course supported.
 
 ### Database setup
 
@@ -181,6 +216,8 @@ Miningcore comes with an integrated REST API. Please refer to this page for inst
 ## Running a production pool
 
 A public production pool requires a web-frontend for your users to check their hashrate, earnings etc. Miningcore does not include such frontend but there are several community projects that can be used as starting point.
+
+Once again, do not run a production pool on Windows! This is not a supported configuration.
 
 ## Donations
 
