@@ -734,6 +734,7 @@ public partial class PoolShareBasedBanningConfig
 public partial class PoolPaymentProcessingConfig
 {
     public bool Enabled { get; set; }
+    public decimal DefaultPayment { get; set; } // in pool-base-currency (ie. Bitcoin, not Satoshis)
     public decimal MinimumPayment { get; set; } // in pool-base-currency (ie. Bitcoin, not Satoshis)
     public PayoutScheme PayoutScheme { get; set; }
     public JToken PayoutSchemeConfig { get; set; }

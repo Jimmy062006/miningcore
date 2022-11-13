@@ -1,4 +1,4 @@
-﻿{
+{
   "definitions": {
     "AdminNotifications": {
       "type": [
@@ -525,7 +525,10 @@
           "type": "boolean"
         },
         "minimumPayment": {
-          "type": "number"
+            "type": "number"
+        },
+        "defaultPayment": {
+            "type":  "number"
         },
         "payoutScheme": {
           "type": "string",

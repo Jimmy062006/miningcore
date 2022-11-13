@@ -40,7 +40,7 @@ public class ApiCoinConfig
 public class ApiPoolPaymentProcessingConfig
 {
     public bool Enabled { get; set; }
-    public decimal MinimumPayment { get; set; } // in pool-base-currency (ie. Bitcoin, not Satoshis)
+    public decimal DefaultPayment { get; set; } // in pool-base-currency (ie. Bitcoin, not Satoshis)
     public string PayoutScheme { get; set; }
     public JToken PayoutSchemeConfig { get; set; }
 

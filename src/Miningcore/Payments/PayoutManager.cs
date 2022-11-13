@@ -193,7 +193,7 @@ public class PayoutManager : BackgroundService
     private async Task PayoutPoolBalancesAsync(IMiningPool pool, PoolConfig config, IPayoutHandler handler, CancellationToken ct)
     {
         var poolBalancesOverMinimum = await cf.Run(con =>
-            balanceRepo.GetPoolBalancesOverThresholdAsync(con, config.Id, config.PaymentProcessing.MinimumPayment));
+            balanceRepo.GetPoolBalancesOverThresholdAsync(con, config.Id, config.PaymentProcessing.DefaultPayment));
 
         if(poolBalancesOverMinimum.Length > 0)
         {

@@ -91,7 +91,16 @@ public class AdminApiController : ApiControllerBase
 
         // clamp limit
         if(pool.PaymentProcessing != null)
-            mapped.PaymentThreshold = Math.Max(mapped.PaymentThreshold, pool.PaymentProcessing.MinimumPayment);
+        {
+            if(pool.PaymentProcessing.MinimumPayment > 0 && mapped.PaymentThreshold > 0)
+            {
+                mapped.PaymentThreshold = Math.Max(mapped.PaymentThreshold, pool.PaymentProcessing.MinimumPayment);
+            }
+            else
+            {
+                mapped.PaymentThreshold = Math.Max(mapped.PaymentThreshold, pool.PaymentProcessing.DefaultPayment);
+            }
+        }
 
         mapped.PoolId = pool.Id;
         mapped.Address = address;

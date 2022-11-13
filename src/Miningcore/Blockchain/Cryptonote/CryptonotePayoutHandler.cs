@@ -537,10 +537,10 @@ public class CryptonotePayoutHandler : PayoutHandlerBase,
         }
 #endif
         // balances with paymentIds
-        var minimumPaymentToPaymentId = extraConfig?.MinimumPaymentToPaymentId ?? poolConfig.PaymentProcessing.MinimumPayment;
+        var defaultPaymentToPaymentId = extraConfig?.DefaultPaymentToPaymentId ?? poolConfig.PaymentProcessing.DefaultPayment;
 
         var paymentIdBalances = balances.Except(simpleBalances)
-            .Where(x => x.Amount >= minimumPaymentToPaymentId)
+            .Where(x => x.Amount >= defaultPaymentToPaymentId)
             .ToArray();
 
         foreach(var balance in paymentIdBalances)
